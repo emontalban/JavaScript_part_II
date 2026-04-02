@@ -162,7 +162,7 @@ Aunque puede usarse en arrays, no se recomienda para ellos porque itera sobre lo
 
 Ejemplo con un objeto
 ```JavaScript
-let info = {primero: "Python", segundo: "JavaScript", tercero: "Ruby"};
+let info = {name: "JavaScript", year: 1995, creator: "Brendan Eich"};
 
 for (let key in info) {
   console.log(key, info[key]);
@@ -211,3 +211,168 @@ array.forEach((elemento, indice) => {
 ```javascript
 lenguajes.forEach((lenguaje) => console.log(lenguaje));
 ```
+#### Bucles While y Do...While
+Los bucles while y do-while son estructuras de control que permiten repetir un bloque de código mientras se cumpla una condición específica. A diferencia del bucle for, que se usa cuando se conoce el número de iteraciones, estos son ideales cuando dicho número es desconocido o depende de una condición de salida.
+
+**WHILE**  
+Es un bucle que repite un bloque de código mientras una condición sea verdadera.
+Se usa cuando no sabes exactamente cuántas veces vas a repetir algo, pero sí sabes cuándo debe parar.  
+Evalúa la condición antes de cada iteración. Si la condición es falsa desde el primer momento, el código dentro del bucle no se ejecutará nunca.  
+Es necesario que la condición cambie dentro del bucle, ya que de lo contrario se puede producir un bucle infinito.
+
+Sintaxis:
+```Javasript
+while (condición) {
+  // código a ejecutar
+}
+```
+![Texto Alternativo](imagenes\while.png)
+
+Ejemplo con While
+```javascript
+let lenguajes = ["Python", "JavaScript", "Ruby", "C++", "Java"];
+let indice = 0;
+
+while (indice < lenguajes.length) {
+  console.log(lenguajes[indice]);
+  indice++
+}
+```
+**DO...WHILE**
+Es una variacion de while donde la condicion se verifica al final del bloque de instrucciones.
+Garantiza que el codigo se ejecuta al menos una vez, sin importar si la condicion es falsa desde el principio.  
+
+Sintaxis:
+```javasript
+do {
+  // bloque de código a ejecutar
+} while (condición);
+```
+El programa se ejecuta el bloque `do` sin preguntar nada. No importa si la condición es falsa desde el principio. Despues evalua el `while` si la condicion es true vuelve al do, si es false el bucle termina.
+
+![Texto Alternativo](imagenes\Do...While.png)
+
+Ejemplo 
+
+```javasript
+let i = 10;
+
+do {
+  console.log("El valor de i es:", i);
+  i--;
+} while (i > 5);
+```
+![Texto Alternativo](imagenes\bucles.png)
+
+## Seleccionar elementos en la página (DOM)
+
+En JavaScript, la página web es representada por el DOM (Document Object Model). Para interactuar con elementos (como un input o botón), primero tenemos que seleccionarlos.
+
+A. Métodos principales:
+1. - querySelector / querySelectorAll (JavaScript puro)  
+```javascript
+// Selecciona el primer elemento con la clase "gLFyf"
+const searchInput = document.querySelector('.gLFyf'); 
+
+// Selecciona todos los elementos con la clase "gLFyf"
+const allInputs = document.querySelectorAll('.gLFyf'); 
+```
+2. - `$` (en Chrome DevTools)   
+
+En la consola de Chrome, `$` funciona como un atajo para document.querySelector:
+```javascript
+// Selecciona el primer input con clase "gLFyf"
+$('.gLFyf'); 
+```
+
+B. Modificar el valor de un input
+
+1. - Para escribir texto en un input:
+```javascript
+const searchBar = document.querySelector('.gLFyf');
+searchBar.value = "JavaScript tips";
+```
+2. - O usando $ en la consola:
+```javascript
+$('.gLFyf').value = "JavaScript tips";
+```
+Esto es equivalente a que el usuario escriba en el input.
+
+C. Hacer click en un botón
+
+A veces los botones no tienen un ID único, por lo que necesitamos navegar en el DOM (traversing).
+
+1. - Ejemplo de DOM traversal:
+
+Supongamos que tenemos:
+``` javascript
+<div class="FPdoLc">
+  <center>
+    <input type="submit" value="Google Search">
+  </center>
+</div>
+```
+Para hacer click en el botón:
+```javascript
+// Seleccionamos el contenedor
+const container = document.querySelector('.FPdoLc');
+
+// Accedemos al primer hijo (<center>)
+const center = container.childNodes[1];  // childNodes[0] suele ser un texto, por eso [1]
+
+// Accedemos al botón dentro del <center>
+const searchButton = center.childNodes[1];
+
+// Hacemos click
+searchButton.click();
+```
+2. - En la consola de Chrome usando $:
+```javascript
+$(".FPdoLc").childNodes[1].childNodes[1].click();
+```
+Esto simula que un usuario presiona el botón.
+
+** Resumen del flujo completo**
+1. Seleccionamos el input de búsqueda
+2. Asignamos un valor (value)
+3. Seleccionamos el botón de búsqueda
+4. Llamamos a .click() en el botón
+
+Ejemplo completo:
+```javascript
+// Paso 1: Seleccionamos el input
+const searchBar = document.querySelector('.gLFyf');
+
+// Paso 2: Escribimos en el input
+searchBar.value = "JavaScript tips";
+
+// Paso 3: Seleccionamos el botón
+const searchButton = document.querySelector('.FPdoLc').childNodes[1].childNodes[1];
+
+// Paso 4: Hacemos click
+searchButton.click();
+```
+Esto hará que Google busque automáticamente “JavaScript tips”.
+
+Conceptos importantes
+- childNodes: lista de todos los nodos hijos (elementos, espacios de texto, comentarios)
+- traversing: navegar de un nodo a otro para encontrar el que necesitamos
+- .value: propiedad de los inputs para leer o escribir texto
+- .click(): simula un click del usuario
+- querySelector vs $: $ es un atajo en la consola, querySelector es JavaScript estándar
+
+Otro ejemplo práctico: automatizar búsqueda en YouTube
+```javascript
+// Seleccionamos la barra de búsqueda
+const ytSearch = document.querySelector('input#search');
+
+// Escribimos el término
+ytSearch.value = "JavaScript tutorials";
+
+// Seleccionamos el botón de buscar
+const ytButton = document.querySelector('button#search-icon-legacy');
+
+// Hacemos click
+ytButton.click();
+```
+La lógica es exactamente la misma: seleccionar input → escribir → seleccionar botón → click.
