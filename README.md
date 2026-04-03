@@ -262,7 +262,7 @@ do {
   i--;
 } while (i > 5);
 ```
-![Texto Alternativo](imagenes\bucles.png)
+![Bucles](imagenes\bucles.png)
 
 ## Seleccionar elementos en la página (DOM)
 
@@ -376,3 +376,134 @@ const ytButton = document.querySelector('button#search-icon-legacy');
 ytButton.click();
 ```
 La lógica es exactamente la misma: seleccionar input → escribir → seleccionar botón → click.
+
+## WEB SCRAPING con instagram
+
+El objetivo es:
+
+- Sacar automáticamente todas las URLs de las imágenes de un perfil de Instagram
+- En lugar de hacerlo manualmente
+
+1.Inspeccionar la página
+
+Click derecho → Inspect
+Buscar las imagenes, ejemplo
+```html
+<img class="FFVAD" src="https://..." />
+```
+💡 Importante:
+
+<img> → es la imagen     
+class="FFVAD" → clase que usa Instagram   
+src="..." → URL de la imagen (esto es lo importante)  
+
+2.Seleccionar todas las imágenes 
+```javascript 
+const images = document.querySelectorAll('.FFVAD')  
+```
+Esto significa:
+
+"Dame todos los elementos que tengan la clase .FFVAD"
+
+Resultado:
+```javascript
+NodeList(30)
+```
+Es como un array con todas las imágenes.
+
+3.Recorrerlas (loop)
+```javaScript
+images.forEach(img => console.log(img.src));
+```
+forEach recorre cada imagen  
+img es cada elemento <img>  
+img.src = la URL de la imagen
+
+Resultado:
+→ Te imprime TODAS las URLs en la consola
+
+4.Guardarlas en un array
+```javascript
+let imageUrlArray = [];
+
+images.forEach(img => imageUrlArray.push(img.src));
+```
+Esto hace:  
+Crea un array vacío  
+Va metiendo cada URL dentro  
+
+Resultado:
+```html
+[
+  "https://...",
+  "https://...",
+  "https://..."
+]
+```
+5.Copiarlo bien (truco PRO)
+```javascript
+copy(imageUrlArray)
+```
+🔥 Esto es clave:
+
+Copia el array al portapapeles
+En formato limpio (no como consola)
+
+Luego puedes pegarlo en:
+
+VS Code
+un archivo JS
+una base de datos
+Cosas importantes que debes entender
+- Las clases pueden cambiar  
+Instagram cambia cosas como:
+
+class="FFVAD"
+
+mañana puede ser:
+
+class="x1abc123"
+
+- ¿Por qué funciona?
+
+Porque estás usando el DOM:
+querySelectorAll → selecciona elementos
+forEach → los recorre
+.src → accede al atributo HTML
+Versión resumida del script final
+```javascript
+const images = document.querySelectorAll('img');
+let imageUrlArray = [];
+images.forEach(img => imageUrlArray.push(img.src));
+copy(imageUrlArray);
+```
+Esto es incluso más genérico (sin depender de clase)
+
+## Variables
+Una variable es un contenedor para un valor, similar a una caja donde puedes guardar cosas. Es importante distinguir entre una variable que es el contenedor y el valor en si mismo.
+``` javaScript
+let lenguaje = "JavaScript";
+```
+- *lenguaje* es es nombre de la variable
+- *"JavaScript"* es lo que va dentro que es el valor de la variable.
+
+Se utilizan para almacenar, registrar y reutilizar datos en un programa.
+Permiten guardar desde informacion simple como numeros y cadenas de texto, hasta datos complejos y funciones completas.  
+Existen tres palabras clave principales para declarar variables en JavaScript:
+- *var*: Era la unica forma disponible cuando se creó el lenguaje. Actualmente se considera obsoleta en mucho contextos. Tiene un alcance de función o global si no esta dentro de una función. Es mutable, lo que significa que puede cambiar el valor. Permite redeclaración dentro del mismo ámbito.
+- *let*: Introducida en versiones modernas  para solucionar el problema de diseño de var. es una variable mutable, es decir, su valor puede cambiar durante la ejecución del programa. Tiene alcance de bloque, lo que significa que solo existe dentro del bloque {}. No permite redeclaracion en el mismo bloque.
+- *const*: Tambien se introdujo en las versiones modernas. Es una variable inmutable. Tiene alcance de bloque. No puede ser reasignada despues de su declaracion, aunque los objetos o arrays a los que apunta pueden mutar sus propiedades internas.
+
+Las diferencias principales entre las diferentes variables son el alcance, la reasignacion y la elevacion(hoisting)
+
+| Característica  | `var`                                                          | `let`                                                             | `const`                                                             |
+| --------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Alcance (Scope) | Global o de función                                            | De bloque (limitado por `{ }`)                                    | De bloque (limitado por `{ }`)                                      |
+| Redeclaración   | Permite volver a declarar la misma variable en el mismo ámbito | No permite volver a declararla en el mismo ámbito                 | No permite volver a declararla                                      |
+| Hoisting        | Se eleva y se inicializa como `undefined`                      | Se eleva pero no se inicializa, causando error si se accede antes | Se eleva pero no se inicializa; debe recibir un valor al declararse |
+| Reasignación    | Permite cambiar el valor en cualquier momento                  | Permite cambiar el valor                                          | No permite cambiar el valor una vez asignado                        |
+
+
+Las mejores prácticas actuales sugieren utilizar let y const siempre que sea posible para evitar errores accidentales y mejorar la legibilidad del código
+
+[variables de JavaScript](imagenes\Variables.png)
