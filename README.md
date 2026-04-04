@@ -506,4 +506,69 @@ Las diferencias principales entre las diferentes variables son el alcance, la re
 
 Las mejores prácticas actuales sugieren utilizar let y const siempre que sea posible para evitar errores accidentales y mejorar la legibilidad del código
 
-[variables de JavaScript](imagenes\Variables.png)
+[variables de JavaScript](imagenes\Variables.png) 
+
+## Funciones Flecha (Arrow function)
+Las funciones flecha (arrow functions), introducidas en javaScript moderno, son una alternativa compacta a las expresiones de función tradicionales.  
+Aunque son muy populares por su brevedad, tienen diferencias técnicas importantes respecto a las funciones normales.  
+A diferencias de las funciones declarativas, las funciones flecha no crean su propio contexto de ejecución completo, lo que implica diferencias importantes en su comportamiento interno.
+
+```javaScript
+(parámetros) => expresión
+// o bien
+(parámetros) => {
+  instrucciones
+}
+```
+- Las funciones flecha permiten reducir la cantidad de código necesario para definir funciones, especialmente en el caso de funciones simples o de una sola línea.
+- Si el cuerpo de la función no está delimitado por llaves {}, el valor de la expresión se devuelve automáticamente.
+- Una de las características más relevantes de las funciones flecha es que no definen su propio valor de this.
+En su lugar, capturan el valor de this del contexto léxico en el que fueron definidas. Este comportamiento se conoce como enlace léxico de this.  
+
+```javaScript
+const curso = {
+  lenguaje: "Python",
+  mostrarLenguaje: () => {
+    return `Estoy aprendiendo ${this.lenguaje}`;
+  }
+};
+console.log(curso.mostrarLenguaje());
+
+//Resultado
+// console.log(curso.mostrarLenguaje());
+```
+Aqui this no apunta al objeto, la funcion flecha no tiene su propio this, usa el this del entorno global.
+
+Solucion:
+```javaScript
+const curso = {
+  lenguaje: "Java",
+  mostrar: function() {
+    const interna = () => {
+      return `Lenguaje: ${this.lenguaje}`;
+    };
+    return interna();
+  }
+};
+
+console.log(curso.mostrar());
+
+//Resultado 
+// Lenguaje : Java
+```
+Aqui funciona bien porque herede el this del método externo
+ - No pueden usarse como constructores, es decir no pueden ser invocadas mediante la palaba clava new. Esto se debe a que no poseen el método interno.
+
+
+Ejemplos:
+```javaScript
+// Sin parametros
+const saludar = () => "Hola";
+
+// Un parametro
+const cuadrado = x => x * x;
+
+// varios parametros
+const suma = (a, b) => a + b;
+```
+[Funciones de flecha](imagenes\Funciones_de_flecha.png) 
